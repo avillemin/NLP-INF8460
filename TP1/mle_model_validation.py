@@ -72,11 +72,26 @@ if __name__ == "__main__":
     `compare_models `pour vérifier qu'ils donnent les mêmes résultats. 
     Comme corpus de test, vous choisirez aléatoirement 50 phrases dans `shakespeare_train`.
     """
-    n=3
-    filename = "./data/shakespeare_test.txt"
+
+    filename = "./data/shakespeare_train.txt"
     preprocessed_corpus = read_and_preprocess(filename)
-    nltk_model = train_MLE_model(preprocessed_corpus, n)
-    my_model = NgramModel(preprocessed_corpus,n)
-    compare_models(my_model, nltk_model, preprocessed_corpus, n)
+    
+    nltk_model_1 = train_MLE_model(preprocessed_corpus, 1)
+    my_model_1 = NgramModel(preprocessed_corpus, 1)
+    
+    nltk_model_2 = train_MLE_model(preprocessed_corpus, 2)
+    my_model_2 = NgramModel(preprocessed_corpus, 2)
+    
+    nltk_model_3 = train_MLE_model(preprocessed_corpus, 3)
+    my_model_3 = NgramModel(preprocessed_corpus, 3)
+    
+    print('Compare_models avec n=1')
+    error_1 = compare_models(my_model_1, nltk_model_1, preprocessed_corpus, 1)
+    print()
+    print('Compare_models avec n=2')
+    error_2 = compare_models(my_model_2, nltk_model_2, preprocessed_corpus, 2)
+    print()
+    print('Compare_models avec n=3')
+    error_3 = compare_models(my_model_3, nltk_model_3, preprocessed_corpus, 3)
     
     pass
