@@ -26,8 +26,8 @@
 9. OK - à tester  
   
 ### 1.4. Méthodes de lissage (20 points)  
-1.  
-2.  
+1. OK  
+2. OK  
 ### 1.5 Évaluation des modèles (20 points)  
 1.  
 2.  
