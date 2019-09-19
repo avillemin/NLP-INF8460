@@ -23,7 +23,7 @@
   
 ### 1.3. Validation/Comparaison du modèle (10 points)  
 8. OK  
-9. En cours par Antonin  
+9. OK - à tester  
   
 ### 1.4. Méthodes de lissage (20 points)  
 1.  
