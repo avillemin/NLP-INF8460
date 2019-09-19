@@ -1,4 +1,4 @@
-# NLP-INF8460
+﻿# NLP-INF8460
 
 # TP1
   
@@ -13,13 +13,13 @@
 8.  
   
 ### 1.2 Modèle de langue n-gramme (20 points)  
-1.  
-2.  
-3.  
-4.  
-5.  
-6.  
-7.  
+1.  OK
+2.  OK
+3.  OK
+4.  OK
+5.  OK
+6.  OK
+7.  OK
   
 ### 1.3. Validation/Comparaison du modèle (10 points)  
 8. OK  
