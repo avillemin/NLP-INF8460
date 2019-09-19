@@ -12,17 +12,27 @@ import preprocess_corpus as pre
 
 
 def count_tokens(corpus):
+    count = 0
     """
     Renvoie le nombre de mots dans le corpus
     """
-    pass
+    for sentence in corpus:
+        for word in sentence:
+            count = count + 1
+    return count
+
 
 
 def count_types(corpus):
     """
     Renvoie le nombre de types (mots distincts) dans le corpus
     """
-    pass
+    words = []
+    for sentence in corpus:
+        for word in sentence:
+            if word not in words:
+                words.append(word)
+    return len(words)
 
 
 def get_most_frequent(corpus, n):
@@ -38,20 +48,25 @@ def get_token_type_ratio(corpus):
     """
     Renvoie le ratio nombre de tokens sur nombre de types
     """
-    pass
+    return count_tokens(corpus)/count_types(corpus)
+
 
 
 def count_lemmas(corpus):
+    lemmed_corpus = pre.lemmatize(corpus)
+    lemma_count = count_types(lemmed_corpus)
     """
     Renvoie le nombre de lemmes distincts
     """
-    pass
+    return lemma_count
 
 
 def count_stems(corpus):
     """
     Renvoie le nombre de racines (stems) distinctes
     """
+    stemmed_corpus = pre.stem(corpus)
+    stem_count = count_types(stemmed_corpus)
     pass
 
 
@@ -69,6 +84,7 @@ def explore(corpus):
 
     (Les chiffres ci-dessus sont indicatifs et ne correspondent pas aux résultats attendus)
     """
+    print
     pass
 
 

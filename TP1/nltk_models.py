@@ -18,6 +18,7 @@ On peut ensuite entraîner le modèle avec la méthode `model.fit(ngrams)`
 from nltk.lm.models import MLE, Laplace, Lidstone
 from nltk.lm.vocabulary import Vocabulary
 from nltk.lm.preprocessing import padded_everygram_pipeline
+from preprocess_corpus import read_and_preprocess
 
 
 def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
@@ -32,7 +33,24 @@ def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
     :param unk_cutoff: le seuil au-dessous duquel un mot est considéré comme inconnu et remplacé par <UNK>
     :return: un modèle entraîné
     """
-    pass
+    lm = None
+    ngrams, words = padded_everygram_pipeline(n, corpus)
+    vocab = Vocabulary(words, unk_cutoff=unk_cutoff)
+    if model=="MLE":
+        lm = MLE(n, vocabulary=vocab)
+        lm.fit(ngrams)
+    elif model == "Lidstone":
+        if gamma == None:
+            raise Exception('Please enter a value for gamma')
+        else:
+            lm = Lidstone(gamma, order = n, vocabulary=vocab)
+            lm.fit(ngrams)
+    elif model=="Laplace":
+        lm = Laplace(order = n, vocabulary=vocab)
+        lm.fit(ngrams)
+    else:
+        raise Exception('Wrong model in train_LM_model')
+    return lm
 
 
 def evaluate(model, corpus):
@@ -107,4 +125,17 @@ if __name__ == "__main__":
     Enfin, pour chaque n=1, 2, 3, vous devrez générer 2 segments de 20 mots pour des modèles MLE entraînés sur Trump.
     Réglez `unk_cutoff=1` pour éviter que le modèle ne génère des tokens <UNK> (question 1.6.2).
     """
+       
+    filename = "./data/shakespeare_train.txt"
+    preprocessed_corpus = read_and_preprocess(filename)
+    
+    mle_model_1 = train_LM_model(preprocessed_corpus, "MLE", 1)
+    laplace_model_1 = train_LM_model(preprocessed_corpus, "Laplace", 1)
+    
+    mle_model_2 = train_LM_model(preprocessed_corpus, "MLE", 2)
+    laplace_model_2 = train_LM_model(preprocessed_corpus, "Laplace", 2)
+    
+    mle_model_3 = train_LM_model(preprocessed_corpus, "MLE", 3)
+    laplace_model_3 = train_LM_model(preprocessed_corpus, "Laplace", 3)
+    
     pass
