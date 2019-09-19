@@ -51,13 +51,19 @@ def compare_models(your_model, nltk_model, corpus, n):
     :return: float, la proportion de n-grammes incorrects
     """
     ngrams = extract_ngrams(corpus,n)
+    nb_total_ngrams = 0
+    nb_total_difference = 0
     for sentence in range(1):
         for ngram in ngrams[sentence]:
-            print(ngram)
-#    if n==1:
-#        if your_model.proba()
-        
-
+            nb_total_ngrams+=1
+            proba_your_model = your_model.proba(ngram[0],ngram[n:])
+            proba_nltk_model = nltk_model.score(ngram[0],ngram[n:])
+            if proba_your_model != proba_nltk_model:
+                print(ngram, proba_your_model, proba_nltk_model)
+                nb_total_difference+=1
+                
+    return nb_total_difference/nb_total_ngrams
+    
 
 if __name__ == "__main__":
     """
