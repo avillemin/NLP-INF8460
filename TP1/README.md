@@ -8,9 +8,9 @@
 3. OK  
 4. OK  
 5. OK  
-6.  
-7.  
-8.  
+6.  OK (mais execution lente)
+7.  OK
+8.  OK
   
 ### 1.2 Modèle de langue n-gramme (20 points)  
 1.  OK
