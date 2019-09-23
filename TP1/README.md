@@ -29,7 +29,7 @@
 1. OK  
 2. OK  
 ### 1.5 Évaluation des modèles (20 points)  
-1.  
+1. OK  
 2.  
 3.  
   
