@@ -168,7 +168,7 @@ if __name__ == "__main__":
         plt.xlabel("gamma")
         plt.ylabel("perplexity value")
         plt.title("Evolution of perplexity with n = "+str(n))
-        plt.savefig(os.path.join("data",f"Lipston_{n}.png"))
+        plt.savefig(os.path.join("data",f"Lidstone_{n}.png"))
         plt.show()
     
     pass
