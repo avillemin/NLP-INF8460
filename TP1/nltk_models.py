@@ -54,6 +54,7 @@ def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
 
 
 def evaluate(model, corpus):
+    perplexity = model.perplexity(corpus[0])
     """
     Renvoie la perplexité du modèle sur une phrase de test.
 
@@ -61,7 +62,7 @@ def evaluate(model, corpus):
     :param corpus: list(list(str)), une corpus tokenizé
     :return: float
     """
-    pass
+    return perplexity
 
 
 def evaluate_gamma(gamma, train, test, n):
