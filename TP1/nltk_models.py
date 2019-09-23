@@ -36,16 +36,16 @@ def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
     lm = None
     ngrams, words = padded_everygram_pipeline(n, corpus)
     vocab = Vocabulary(words, unk_cutoff=unk_cutoff)
-    if model=="MLE":
-        lm = MLE(n, vocabulary=vocab)
+    if model== MLE:
+        lm = model(n, vocabulary=vocab)
         lm.fit(ngrams)
-    elif model == "Lidstone":
+    elif model == Lidstone:
         if gamma == None:
             raise Exception('Please enter a value for gamma')
         else:
             lm = Lidstone(gamma, order = n, vocabulary=vocab)
             lm.fit(ngrams)
-    elif model=="Laplace":
+    elif model==Laplace:
         lm = Laplace(order = n, vocabulary=vocab)
         lm.fit(ngrams)
     else:
@@ -54,7 +54,7 @@ def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
 
 
 def evaluate(model, corpus):
-    perplexity = model.perplexity(corpus[0])
+    perplexity = model.perplexity(corpus)
     """
     Renvoie la perplexité du modèle sur une phrase de test.
 
@@ -126,17 +126,32 @@ if __name__ == "__main__":
     Enfin, pour chaque n=1, 2, 3, vous devrez générer 2 segments de 20 mots pour des modèles MLE entraînés sur Trump.
     Réglez `unk_cutoff=1` pour éviter que le modèle ne génère des tokens <UNK> (question 1.6.2).
     """
-       
-    filename = "./data/shakespeare_train.txt"
-    preprocessed_corpus = read_and_preprocess(filename)
+    print('Loading data')
+    filename_train = "./data/shakespeare_train.txt"
+    preprocessed_corpus_train = read_and_preprocess(filename_train)
+    filename_test = "./data/shakespeare_test.txt"
+    preprocessed_corpus_test = read_and_preprocess(filename_test)
+    print("Done")
+    print()
     
-    mle_model_1 = train_LM_model(preprocessed_corpus, "MLE", 1)
-    laplace_model_1 = train_LM_model(preprocessed_corpus, "Laplace", 1)
+    print("Fitting models with n=1")
+    mle_model_1 = train_LM_model(preprocessed_corpus_train, MLE, 1)
+    laplace_model_1 = train_LM_model(preprocessed_corpus_train, Laplace, 1)
+    print("Perplexity mle: ",evaluate(mle_model_1, preprocessed_corpus_test))
+    print("Perplexity Laplace: ",evaluate(laplace_model_1, preprocessed_corpus_test))
+    print()
     
-    mle_model_2 = train_LM_model(preprocessed_corpus, "MLE", 2)
-    laplace_model_2 = train_LM_model(preprocessed_corpus, "Laplace", 2)
+    print("Fitting models with n=2")
+    mle_model_2 = train_LM_model(preprocessed_corpus_train, MLE, 2)
+    laplace_model_2 = train_LM_model(preprocessed_corpus_train, Laplace, 2)
+    print("Perplexity mle: ",evaluate(mle_model_2, preprocessed_corpus_test))
+    print("Perplexity Laplace: ",evaluate(laplace_model_2, preprocessed_corpus_test))
+    print()
     
-    mle_model_3 = train_LM_model(preprocessed_corpus, "MLE", 3)
-    laplace_model_3 = train_LM_model(preprocessed_corpus, "Laplace", 3)
+    print("Fitting models with n=3")
+    mle_model_3 = train_LM_model(preprocessed_corpus_train, MLE, 3)
+    laplace_model_3 = train_LM_model(preprocessed_corpus_train, Laplace, 3)   
+    print("Perplexity mle: ",evaluate(mle_model_3, preprocessed_corpus_test))
+    print("Perplexity Laplace: ",evaluate(laplace_model_3, preprocessed_corpus_test))
     
     pass
