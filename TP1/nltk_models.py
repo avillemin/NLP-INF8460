@@ -19,7 +19,9 @@ from nltk.lm.models import MLE, Laplace, Lidstone
 from nltk.lm.vocabulary import Vocabulary
 from nltk.lm.preprocessing import padded_everygram_pipeline
 from preprocess_corpus import read_and_preprocess
-
+import numpy as np
+import matplotlib.pyplot as plt
+import os
 
 def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
     """
@@ -153,5 +155,20 @@ if __name__ == "__main__":
     laplace_model_3 = train_LM_model(preprocessed_corpus_train, Laplace, 3)   
     print("Perplexity mle: ",evaluate(mle_model_3, preprocessed_corpus_test))
     print("Perplexity Laplace: ",evaluate(laplace_model_3, preprocessed_corpus_test))
+    
+    for n in [1,2,3]:
+        list_perplexity = []
+        print()
+        print("Fitting Lidstone models with n =",n,end='')
+        for gamma in np.logspace(-5, 0, 10):
+            list_perplexity.append(evaluate_gamma(gamma,preprocessed_corpus_train,preprocessed_corpus_test,n))
+            print('.',end='')
+        plt.figure()
+        plt.plot(np.logspace(-5, 0, 10), list_perplexity)
+        plt.xlabel("gamma")
+        plt.ylabel("perplexity value")
+        plt.title("Evolution of perplexity with n = "+str(n))
+        plt.savefig(os.path.join("data",f"Lipston_{n}.png"))
+        plt.show()
     
     pass
