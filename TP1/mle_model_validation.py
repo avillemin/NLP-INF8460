@@ -30,7 +30,7 @@ def train_MLE_model(corpus, n):
     """
     
     ngrams, words = padded_everygram_pipeline(n, corpus)
-    vocab = Vocabulary(words, unk_cutoff=2)
+    vocab = Vocabulary(words, unk_cutoff=1)
     lm = MLE(n, vocabulary=vocab)
     lm.fit(ngrams)
     
@@ -56,8 +56,8 @@ def compare_models(your_model, nltk_model, corpus, n):
     for sentence in range(1):
         for ngram in ngrams[sentence]:
             nb_total_ngrams+=1
-            proba_your_model = your_model.proba(ngram[0],ngram[n:])
-            proba_nltk_model = nltk_model.score(ngram[0],ngram[n:])
+            proba_your_model = your_model.proba(ngram[-1],ngram[:-1])
+            proba_nltk_model = nltk_model.score(ngram[-1],ngram[:-1])
             if proba_your_model != proba_nltk_model:
                 print(ngram, proba_your_model, proba_nltk_model)
                 nb_total_difference+=1
@@ -87,11 +87,14 @@ if __name__ == "__main__":
     
     print('Compare_models avec n=1')
     error_1 = compare_models(my_model_1, nltk_model_1, preprocessed_corpus, 1)
+    print(error_1)
     print()
     print('Compare_models avec n=2')
     error_2 = compare_models(my_model_2, nltk_model_2, preprocessed_corpus, 2)
+    print(error_2)
     print()
     print('Compare_models avec n=3')
     error_3 = compare_models(my_model_3, nltk_model_3, preprocessed_corpus, 3)
+    print(error_3)
     
     pass
