@@ -17,7 +17,8 @@ On peut ensuite entraîner le modèle avec la méthode `model.fit(ngrams)`
 """
 from nltk.lm.models import MLE, Laplace, Lidstone
 from nltk.lm.vocabulary import Vocabulary
-from nltk.lm.preprocessing import padded_everygram_pipeline
+from nltk.lm.preprocessing import padded_everygram_pipeline, flatten
+import mle_ngram_model as ngram
 from preprocess_corpus import read_and_preprocess
 import numpy as np
 import matplotlib.pyplot as plt
@@ -56,7 +57,6 @@ def train_LM_model(corpus, model, n, gamma=None, unk_cutoff=2):
 
 
 def evaluate(model, corpus):
-    perplexity = model.perplexity(corpus)
     """
     Renvoie la perplexité du modèle sur une phrase de test.
 
@@ -64,7 +64,11 @@ def evaluate(model, corpus):
     :param corpus: list(list(str)), une corpus tokenizé
     :return: float
     """
-    return perplexity
+
+    ngrams, words = padded_everygram_pipeline(model.order, corpus)
+    ngrams = flatten(ngrams)
+    return model.perplexity(ngrams)
+    
 
 
 def evaluate_gamma(gamma, train, test, n):
@@ -165,8 +169,9 @@ if __name__ == "__main__":
             print('.',end='')
         plt.figure()
         plt.plot(np.logspace(-5, 0, 10), list_perplexity)
-        plt.xlabel("gamma")
+        plt.xlabel("log(gamma)")
         plt.ylabel("perplexity value")
+        plt.xscale('log',basex=10) 
         plt.title("Evolution of perplexity with n = "+str(n))
         plt.savefig(os.path.join("data",f"Lidstone_{n}.png"))
         plt.show()
