@@ -34,5 +34,5 @@
 3. OK  
   
 ### 1.6 Génération de texte (corpus Trump) (10 points)  
-1.  
-2.  
+1.  OK
+2.  OK
