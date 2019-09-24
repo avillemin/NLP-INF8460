@@ -107,8 +107,31 @@ def generate(model, n_words, text_seed=None, random_seed=None):
     ne pas fixer de seed, il suffit de laisser `random_seed=None`
     :return: str
     """
-    pass
 
+    
+    
+    
+    if text_seed == None :
+        text_seed = ("<s>",) * ( model.order - 1 )
+    
+    filtered_tweet = []
+    n_remaining_words = n_words
+    while n_remaining_words > 0 :
+        # Generation du nouveau tweet
+        tweet = model.generate(n_remaining_words, text_seed, random_seed)
+        if "</s>" in tweet :
+            i = tweet.index("</s>")
+            tweet = tweet[:i]
+        
+        # Filtrage des '<s>' et des '</s>'
+        filtered_tweet += list(filter(lambda x : x!="<s>" and x!="</s>", tweet))
+        n_remaining_words = n_words - len(filtered_tweet)
+    
+    #Gestion des "#" et des "@" d'après la discussion dans le forum moodle
+    final_phrase = " ".join(filtered_tweet)
+    final_phrase = final_phrase.replace("# ", "#").replace("@ ","@")
+                                       
+    return final_phrase 
 
 if __name__ == "__main__":
     """
@@ -132,6 +155,7 @@ if __name__ == "__main__":
     Enfin, pour chaque n=1, 2, 3, vous devrez générer 2 segments de 20 mots pour des modèles MLE entraînés sur Trump.
     Réglez `unk_cutoff=1` pour éviter que le modèle ne génère des tokens <UNK> (question 1.6.2).
     """
+    print("#"*20, 'Question 1')
     print('Loading data')
     filename_train = "./data/shakespeare_train.txt"
     preprocessed_corpus_train = read_and_preprocess(filename_train)
@@ -160,6 +184,7 @@ if __name__ == "__main__":
     print("Perplexity mle: ",evaluate(mle_model_3, preprocessed_corpus_test))
     print("Perplexity Laplace: ",evaluate(laplace_model_3, preprocessed_corpus_test))
     
+    print("#"*20, 'Question 2')
     for n in [1,2,3]:
         list_perplexity = []
         print()
@@ -176,4 +201,13 @@ if __name__ == "__main__":
         plt.savefig(os.path.join("data",f"Lidstone_{n}.png"))
         plt.show()
     
-    pass
+    print("#"*20, 'Question 3')
+    
+    corpus = read_and_preprocess('data/trump.txt')
+    for n in range(1,4):
+        print("Pour n = ", n)
+        model = train_LM_model(corpus, MLE, n, unk_cutoff = 1)
+        for s in range(1,3):
+            print('Segment numéro ',s,' :')
+            segment = generate(model, n_words=20, random_seed=None)
+            print(segment)
