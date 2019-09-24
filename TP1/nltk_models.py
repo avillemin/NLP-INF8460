@@ -169,7 +169,7 @@ if __name__ == "__main__":
             print('.',end='')
         plt.figure()
         plt.plot(np.logspace(-5, 0, 10), list_perplexity)
-        plt.xlabel("log(gamma)")
+        plt.xlabel("gamma")
         plt.ylabel("perplexity value")
         plt.xscale('log',basex=10) 
         plt.title("Evolution of perplexity with n = "+str(n))
