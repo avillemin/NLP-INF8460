@@ -76,6 +76,7 @@ if __name__ == "__main__":
     filename = "./data/shakespeare_train.txt"
     preprocessed_corpus = read_and_preprocess(filename)
     
+    # Entrainement des differents modeles
     nltk_model_1 = train_MLE_model(preprocessed_corpus, 1)
     my_model_1 = NgramModel(preprocessed_corpus, 1)
     
@@ -85,6 +86,7 @@ if __name__ == "__main__":
     nltk_model_3 = train_MLE_model(preprocessed_corpus, 3)
     my_model_3 = NgramModel(preprocessed_corpus, 3)
     
+    # Compare si notre modele retourne les memes resultats que le modele nltk
     print('Compare_models avec n=1')
     error_1 = compare_models(my_model_1, nltk_model_1, preprocessed_corpus, 1)
     print(error_1)

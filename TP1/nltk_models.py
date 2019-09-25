@@ -66,7 +66,7 @@ def evaluate(model, corpus):
     """
 
     ngrams, words = padded_everygram_pipeline(model.order, corpus)
-    ngrams = flatten(ngrams)
+    ngrams = flatten(ngrams) # met les phrases bout à bout pour pouvoir calculer la perplexite
     return model.perplexity(ngrams)
     
 
@@ -107,9 +107,6 @@ def generate(model, n_words, text_seed=None, random_seed=None):
     ne pas fixer de seed, il suffit de laisser `random_seed=None`
     :return: str
     """
-
-    
-    
     
     if text_seed == None :
         text_seed = ("<s>",) * ( model.order - 1 )
@@ -156,7 +153,8 @@ if __name__ == "__main__":
     Réglez `unk_cutoff=1` pour éviter que le modèle ne génère des tokens <UNK> (question 1.6.2).
     """
     print("#"*20, 'Question 1')
-    print('Loading data')
+    print('Loading data') 
+    # Preprocess des deux corpus (train et test)
     filename_train = "./data/shakespeare_train.txt"
     preprocessed_corpus_train = read_and_preprocess(filename_train)
     filename_test = "./data/shakespeare_test.txt"
@@ -164,6 +162,7 @@ if __name__ == "__main__":
     print("Done")
     print()
     
+    # On entraine les modeles MLE et Laplace en faisant varier l'ordre
     print("Fitting models with n=1")
     mle_model_1 = train_LM_model(preprocessed_corpus_train, MLE, 1)
     laplace_model_1 = train_LM_model(preprocessed_corpus_train, Laplace, 1)
@@ -184,8 +183,9 @@ if __name__ == "__main__":
     print("Perplexity mle: ",evaluate(mle_model_3, preprocessed_corpus_test))
     print("Perplexity Laplace: ",evaluate(laplace_model_3, preprocessed_corpus_test))
     
+    # On fait maintenant varier gamma avec le modele Lidstone
     print("#"*20, 'Question 2')
-    for n in [1,2,3]:
+    for n in [1,2,3]:                   
         list_perplexity = []
         print()
         print("Fitting Lidstone models with n =",n,end='')
@@ -198,11 +198,12 @@ if __name__ == "__main__":
         plt.ylabel("perplexity value")
         plt.xscale('log',basex=10) 
         plt.title("Evolution of perplexity with n = "+str(n))
-        plt.savefig(os.path.join("data",f"Lidstone_{n}.png"))
+        plt.savefig(os.path.join("output",f"Lidstone_{n}.png"))  #Save the figure in the output directory
         plt.show()
     
     print("#"*20, 'Question 3')
     
+    # Genere les messages de Donald Trump
     corpus = read_and_preprocess('data/trump.txt')
     for n in range(1,4):
         print("Pour n = ", n)

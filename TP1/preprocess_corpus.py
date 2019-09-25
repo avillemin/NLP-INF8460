@@ -128,18 +128,19 @@ if __name__ == "__main__":
     ```
     """
     filenames = ["./data/shakespeare_test", "./data/shakespeare_train"]
-    for filename in filenames : 
+    
+    for filename in filenames : # On repete le preprocess sur les deux corpus (train et test)
         with open(filename + ".txt", "r") as f:
             corpus = f.read()
         segmented_corpus = segmentize(corpus)
 
-        with open(filename + "_phrases.txt", "w") as f:
+        with open('./output' + filename[6:] + "_phrases.txt", "w") as f:
             for phrase in segmented_corpus:
                 f.write(phrase+'\n')
 
         tokenized_corpus = tokenize(segmented_corpus)
 
-        with open(filename + "_mots.txt", "w") as f:
+        with open('./output' + filename[6:] + "_mots.txt", "w") as f:
             for phrase in segmented_corpus:
                 for word in phrase:
                     f.write(word+' ')
@@ -147,7 +148,7 @@ if __name__ == "__main__":
 
         lemmatized_corpus = lemmatize(tokenized_corpus)
     	
-        with open(filename + "_lemmes.txt","w") as f:
+        with open('./output' + filename[6:] + "_lemmes.txt","w") as f:
           	for phrase in lemmatized_corpus :
                   for word in phrase :
                       f.write(word+' ')
@@ -155,7 +156,7 @@ if __name__ == "__main__":
                 
         stemmed_corpus = stem(lemmatized_corpus)
         
-        with open(filename + "_stems.txt","w") as f:
+        with open('./output' + filename[6:] + "_stems.txt","w") as f:
             for phrase in stemmed_corpus :
                 for word in phrase :
                     f.write(word+' ')
